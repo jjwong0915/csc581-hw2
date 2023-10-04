@@ -1,5 +1,5 @@
-#ifndef TIMELINE_H
-#define TIMELINE_H
+#ifndef TIMELINE_HPP
+#define TIMELINE_HPP
 
 #include <SFML/System/Time.hpp>
 #include <mutex>

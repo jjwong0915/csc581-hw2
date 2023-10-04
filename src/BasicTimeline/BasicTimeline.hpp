@@ -1,5 +1,5 @@
-#ifndef BASIC_TIMELINE_H
-#define BASIC_TIMELINE_H
+#ifndef BASIC_TIMELINE_HPP
+#define BASIC_TIMELINE_HPP
 
 #include <SFML/System/Time.hpp>
 

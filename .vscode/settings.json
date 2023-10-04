@@ -50,6 +50,16 @@
         "condition_variable": "cpp",
         "ratio": "cpp",
         "mutex": "cpp",
-        "thread": "cpp"
-    }
+        "thread": "cpp",
+        "cstring": "cpp",
+        "map": "cpp",
+        "iomanip": "cpp",
+        "cinttypes": "cpp",
+        "any": "cpp",
+        "variant": "cpp"
+    },
+    "C_Cpp.default.includePath": [
+        "include"
+    ],
+    "C_Cpp.default.compilerPath": "/usr/bin/g++"
 }

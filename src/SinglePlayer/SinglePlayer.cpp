@@ -13,7 +13,6 @@
 #include <iostream>
 #include <set>
 
-#include "../BasicTimeline/BasicTimeline.hpp"
 #include "../SfmlTimeline/SfmlTimeline.hpp"
 #include "../Timeline/Timeline.hpp"
 

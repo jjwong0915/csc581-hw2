@@ -1,5 +1,5 @@
-#ifndef SFML_TIMELINE_H
-#define SFML_TIMELINE_H
+#ifndef SFML_TIMELINE_HPP
+#define SFML_TIMELINE_HPP
 
 #include <SFML/System/Clock.hpp>
 
