@@ -1,16 +1,24 @@
 #include "Timeline.hpp"
 
+#include <SFML/System.hpp>
 #include <iostream>
 #include <mutex>
 
-Timeline::Timeline(BasicTimeline* anchor, float time_ratio) {
+sf::Clock Timeline::global_clock;
+
+Timeline::Timeline(Timeline* anchor, float time_ratio) {
   this->anchor = anchor;
-  this->reference_time = anchor->get_time();
+  if (anchor != nullptr) {
+    this->reference_time = anchor->get_time();
+  }
   this->time_ratio = time_ratio;
   this->paused = false;
 }
 
 sf::Time Timeline::get_time() {
+  if (this->anchor == nullptr) {
+    return this->global_clock.getElapsedTime();
+  }
   std::lock_guard<std::mutex> lock(this->mutex);
   if (this->paused) {
     return (this->pause_time - this->reference_time) * this->time_ratio;

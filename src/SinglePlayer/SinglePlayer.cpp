@@ -1,26 +1,17 @@
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/System/Sleep.hpp>
-#include <SFML/System/String.hpp>
-#include <SFML/System/Thread.hpp>
-#include <SFML/System/Time.hpp>
-#include <SFML/Window/Event.hpp>
-#include <SFML/Window/Keyboard.hpp>
-#include <SFML/Window/VideoMode.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 #include <cmath>
 #include <functional>
 #include <iostream>
 #include <set>
+#include <thread>
 
-#include "../SfmlTimeline/SfmlTimeline.hpp"
 #include "../Timeline/Timeline.hpp"
 
 std::set<sf::Keyboard::Key> key_pressed;
-SfmlTimeline system_time;
-Timeline game_time{&system_time};
 
-void game_time_update() {
+void game_time_update(Timeline& system_time, Timeline& game_time) {
   sf::Time last_pause_unpause;
   sf::Time last_change_speed;
   while (true) {
@@ -48,12 +39,11 @@ void game_time_update() {
   }
 }
 
-void platform_move(sf::RectangleShape& platform) {
+void platform_move(sf::RectangleShape& platform, Timeline& game_time) {
   const float velocity = 200.0;
-  //
   while (true) {
     platform.setPosition(
-        {(float)150 +
+        {150.f +
              (float)std::abs(
                  std::fmod(game_time.get_time().asSeconds() * velocity, 800) -
                  400),
@@ -62,9 +52,8 @@ void platform_move(sf::RectangleShape& platform) {
   }
 }
 
-void character_move(sf::CircleShape& character) {
+void character_move(sf::CircleShape& character, Timeline& game_time) {
   const float velocity = 200.0;
-  //
   sf::Time last_time;
   while (true) {
     const sf::Time current_time = game_time.get_time();
@@ -90,18 +79,19 @@ int main() {
   // setup window
   sf::RenderWindow window(sf::VideoMode{800, 600}, "Homework 2");
   // setup game time
-  sf::Thread game_time_updating(game_time_update);
-  game_time_updating.launch();
+  Timeline system_time;
+  Timeline game_time{&system_time};
+  std::thread game_time_updating{game_time_update, std::ref(system_time),
+                                 std::ref(game_time)};
   // setup moving platform
   sf::RectangleShape moving_platform({100, 10});
-  moving_platform.setPosition(350, 400);
-  sf::Thread moving_platform_movement(platform_move, std::ref(moving_platform));
-  moving_platform_movement.launch();
+  std::thread moving_platform_movement(platform_move, std::ref(moving_platform),
+                                       std::ref(game_time));
   // setup character
   sf::CircleShape character(10);
   character.setPosition(395, 200);
-  sf::Thread character_movement(character_move, std::ref(character));
-  character_movement.launch();
+  std::thread character_movement(character_move, std::ref(character),
+                                 std::ref(game_time));
   // game loop
   while (window.isOpen()) {
     // handle events
@@ -112,9 +102,6 @@ int main() {
       } else if (event.type == sf::Event::KeyReleased) {
         key_pressed.erase(event.key.code);
       } else if (event.type == sf::Event::Closed) {
-        game_time_updating.terminate();
-        moving_platform_movement.terminate();
-        character_movement.terminate();
         window.close();
       }
     }

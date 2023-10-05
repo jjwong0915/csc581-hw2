@@ -1,4 +1,4 @@
-OBJS = src/SfmlTimeline/SfmlTimeline.o src/Timeline/Timeline.o
+OBJS = src/Timeline/Timeline.o
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lzmq -lpthread
 CXXFLAGS = -std=c++17 -Isrc
 
@@ -15,15 +15,14 @@ client: src/Client/Client.o $(OBJS)
 
 ####
 
-src/SfmlTimeline/SfmlTimeline.o: src/SfmlTimeline/SfmlTimeline.hpp src/BasicTimeline/BasicTimeline.hpp
 
-src/Timeline/Timeline.o: src/Timeline/Timeline.hpp src/BasicTimeline/BasicTimeline.hpp
+src/Timeline/Timeline.o: src/Timeline/Timeline.hpp
 
-src/SinglePlayer/SinglePlayer.o: src/SfmlTimeline/SfmlTimeline.hpp src/Timeline/Timeline.hpp
+src/SinglePlayer/SinglePlayer.o: src/Timeline/Timeline.hpp
 
-src/Server/Server.o: src/Object/Object.hpp src/UserAction/UserAction.hpp
+src/Server/Server.o: src/Object/Object.hpp src/Timeline/Timeline.hpp src/UserAction/UserAction.hpp
 
-src/Server/Client.o: src/Object/Object.hpp src/UserAction/UserAction.hpp
+src/Server/Client.o: src/Object/Object.hpp src/Timeline/Timeline.hpp src/UserAction/UserAction.hpp
 
 ####
 

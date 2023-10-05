@@ -9,12 +9,12 @@
 #include <zmq.hpp>
 
 #include "Object/Object.hpp"
-#include "SfmlTimeline/SfmlTimeline.hpp"
+#include "Timeline/Timeline.hpp"
 #include "UserAction/UserAction.hpp"
 
 void handle_platform(Object& platform) {
   const float velocity = 200.0;
-  SfmlTimeline server_time;
+  Timeline server_time;
   while (true) {
     platform.pos_x =
         150.0 +

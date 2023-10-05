@@ -12,7 +12,6 @@
 #include <zmq.hpp>
 
 #include "Object/Object.hpp"
-#include "SfmlTimeline/SfmlTimeline.hpp"
 #include "Timeline/Timeline.hpp"
 #include "UserAction/UserAction.hpp"
 
@@ -36,7 +35,7 @@ int main(void) {
   // setup keypress list
   std::set<sf::Keyboard::Key> key_pressed;
   // setup timeline
-  SfmlTimeline system_time;
+  Timeline system_time;
   Timeline game_time(&system_time);
   sf::Time last_iter = game_time.get_time();
   // create character
